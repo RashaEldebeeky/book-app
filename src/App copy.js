@@ -3,7 +3,7 @@ import * as BooksAPI from "./BooksAPI";
 import "./App.css";
 import Search from "./Search";
 import BookList from "./BookList";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 
 class BooksApp extends React.Component {
   state = {
@@ -32,29 +32,25 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-        <BrowserRouter>
-          <Routes>
-            <Route
-              exact
-              path="/"
-              element={
-                <BookList
-                  books={this.state.books}
-                  changeShelf={(book, shelf) => this.changeShelf(book, shelf)}
-                />
-              }
+        <Route
+          exact
+          path="/"
+          render={() => (
+            <BookList
+              books={this.state.books}
+              changeShelf={(book, shelf) => this.changeShelf(book, shelf)}
             />
-            <Route
-              path="/search"
-              element={
-                <Search
-                  books={this.state.books}
-                  changeShelf={(book, shelf) => this.changeShelf(book, shelf)}
-                />
-              }
+          )}
+        />
+        <Route
+          path="/search"
+          render={() => (
+            <Search
+              books={this.state.books}
+              changeShelf={(book, shelf) => this.changeShelf(book, shelf)}
             />
-          </Routes>
-        </BrowserRouter>
+          )}
+        />
       </div>
     );
   }
