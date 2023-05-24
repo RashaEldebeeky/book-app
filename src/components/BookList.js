@@ -13,7 +13,7 @@ function BookList(props) {
   return (
     <div className="list-books">
       <div className="list-books-title">
-        <h1>MyReads</h1>
+        <h1>My Reads</h1>
       </div>
       <div className="list-books-content">
         {bookShelves.map((shelf) => (
