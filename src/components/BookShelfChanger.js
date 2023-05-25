@@ -1,13 +1,19 @@
 import React from "react";
 import "./App.css";
+import { useDispatch } from "react-redux";
+import { changeShelf } from "../state-management/actions/books.actions";
 
 function BookShelfChanger(props) {
-  const { shelf, changeShelf } = props;
-  const shelfValue = shelf ? shelf : "none";
+  const dispatch = useDispatch();
+
+  const { book } = props;
+  const shelfValue = book.shelf ? book.shelf : "none";
   return (
     <div className="book-shelf-changer">
       <select
-        onChange={(event) => changeShelf(event.target.value)}
+        onChange={(event) =>
+          dispatch(changeShelf({ book, shelf: event.target.value }))
+        }
         value={shelfValue}
       >
         <option value="move" disabled>

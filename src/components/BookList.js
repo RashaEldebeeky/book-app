@@ -1,14 +1,17 @@
 import React from "react";
 import "./App.css";
 import { Link } from "react-router-dom";
-import BookShelf from "./BookShelf";
+import BookCard from "./BookCard";
+import { useSelector } from "react-redux";
+import { booksSelector } from "../state-management/selectors/books.selectors";
 
-function BookList(props) {
-  const { books, changeShelf } = props;
-  const bookShelves = [
-    { key: "currentlyReading", title: "Currently Reading" },
-    { key: "wantToRead", title: "Want to Read" },
-    { key: "read", title: "Read" },
+export default function BookList() {
+  const books = useSelector(booksSelector);
+
+  const shelves = [
+    { id: "currentlyReading", title: "Currently Reading" },
+    { id: "wantToRead", title: "Want to Read" },
+    { id: "read", title: "Read" },
   ];
   return (
     <div className="list-books">
@@ -16,13 +19,21 @@ function BookList(props) {
         <h1>My Reads</h1>
       </div>
       <div className="list-books-content">
-        {bookShelves.map((shelf) => (
-          <BookShelf
-            key={shelf.key}
-            title={shelf.title}
-            books={books.filter((book) => book.shelf === shelf.key)}
-            changeShelf={(book, _shelf) => changeShelf(book, _shelf, shelf.key)}
-          />
+        {shelves.map((shelf) => (
+          <div key={shelf.id} className="bookshelf">
+            <h2 className="bookshelf-title">{shelf.title}</h2>
+            <div className="bookshelf-books">
+              <ol className="books-grid" key={shelf.id}>
+                {books
+                  .filter((book) => book.shelf === shelf.id)
+                  .map((book) => (
+                    <li key={book.id}>
+                      <BookCard book={book} />
+                    </li>
+                  ))}
+              </ol>
+            </div>
+          </div>
         ))}
       </div>
       <Link to="/search" className="open-search">
@@ -31,4 +42,3 @@ function BookList(props) {
     </div>
   );
 }
-export default BookList;

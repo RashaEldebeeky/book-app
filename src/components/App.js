@@ -1,61 +1,25 @@
-import React from "react";
-import * as BooksAPI from "./BooksAPI";
+import React, { useEffect } from "react";
+import * as BooksAPI from "../services/booksService";
 import "./App.css";
 import Search from "./Search";
 import BookList from "./BookList";
 import { Routes, Route } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setBooks } from "../state-management/actions/books.actions";
 
-class BooksApp extends React.Component {
-  state = {
-    books: [],
-  };
+export default function BooksApp() {
+  const dispatch = useDispatch();
 
-  async componentDidMount() {
-    const books = await BooksAPI.getAll();
-    this.setState({ books });
-  }
+  useEffect(() => {
+    BooksAPI.getAll().then((books) => dispatch(setBooks(books)));
+  });
 
-  changeShelf(book, shelf) {
-    BooksAPI.update(book, shelf).then(() => {
-      this.setState((prevstate) => {
-        let books = [...prevstate.books];
-        const index = books.findIndex((_book) => _book.id === book.id);
-        book.shelf = shelf;
-        if (index > -1) {
-          books[index] = book;
-          return { books };
-        } else return { books: [...books, book] };
-      });
-    });
-  }
-
-  render() {
-    return (
-      <div className="app">
-        <Routes>
-          <Route
-            exact
-            path="/"
-            element={
-              <BookList
-                books={this.state.books}
-                changeShelf={(book, shelf) => this.changeShelf(book, shelf)}
-              />
-            }
-          />
-          <Route
-            path="/search"
-            element={
-              <Search
-                books={this.state.books}
-                changeShelf={(book, shelf) => this.changeShelf(book, shelf)}
-              />
-            }
-          />
-        </Routes>
-      </div>
-    );
-  }
+  return (
+    <div className="app">
+      <Routes>
+        <Route exact path="/" element={<BookList />} />
+        <Route path="/search" element={<Search />} />
+      </Routes>
+    </div>
+  );
 }
-
-export default BooksApp;

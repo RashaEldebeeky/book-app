@@ -5,13 +5,9 @@ import PropTypes from "prop-types";
 
 function BookCard(props) {
   BookCard.propTypes = {
-    title: PropTypes.string.isRequired,
-    authors: PropTypes.array.isRequired,
-    shelf: PropTypes.string.isRequired,
-    imageLinks: PropTypes.object.isRequired,
-    changeShelf: PropTypes.func.isRequired,
+    book: PropTypes.object.isRequired,
   };
-  const { title, authors, shelf, imageLinks, changeShelf } = props;
+  const { title, authors, imageLinks } = props.book;
   return (
     <div className="book">
       <div className="book-top">
@@ -26,10 +22,7 @@ function BookCard(props) {
                 : ``,
           }}
         />
-        <BookShelfChanger
-          shelf={shelf}
-          changeShelf={(shelf) => changeShelf(shelf)}
-        />
+        <BookShelfChanger book={props.book} />
       </div>
       <div className="book-title">{title}</div>
       <div className="book-authors">{authors && authors.join(",")}</div>
