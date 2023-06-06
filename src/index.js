@@ -11,7 +11,7 @@ const store = createStore(reducer, middleware);
 const container = document.getElementById("root");
 const root = createRoot(container);
 root.render(
-  <BrowserRouter>
+  <BrowserRouter basename={process.env.PUBLIC_URL}>
     <Provider store={store}>
       <App />
     </Provider>
